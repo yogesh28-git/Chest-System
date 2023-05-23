@@ -8,8 +8,6 @@ namespace ChestSystem
     {
         [SerializeField] private List<ChestSlot> slotList;
 
-        
-
         public ChestSlot GetVacantSlot( )
         {
             ChestSlot slot = null;

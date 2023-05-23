@@ -6,10 +6,10 @@ namespace ChestSystem.Chest
     {
         public ChestModel ChestModel { get; private set; }
         public ChestView ChestView { get; private set; }
-        public ChestController( ChestModel chestModel, ChestView chestView )
+        public ChestController( ChestModel chestModel, ChestView chestPrefab )
         {
             this.ChestModel = chestModel;
-            this.ChestView = chestView;
+            this.ChestView = GameObject.Instantiate<ChestView>( chestPrefab );
 
             ChestModel.SetController( this );
             ChestView.SetController( this );
