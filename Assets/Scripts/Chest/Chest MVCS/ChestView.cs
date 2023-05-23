@@ -1,12 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace ChestSystem.Chest
 {
     public class ChestView : MonoBehaviour
     {
+        public Button ChestButton { get { return chestButton; } private set { } }
+        public TextMeshProUGUI TopText { get { return topText; } private set { } }
+        public TextMeshProUGUI BottomText { get { return bottomText; } private set { } }
+
         [SerializeField] private RectTransform chestRectTransform;
         [SerializeField] private Image chestImage;
+        [SerializeField] private Button chestButton;
+        [SerializeField] private TextMeshProUGUI topText;
+        [SerializeField] private TextMeshProUGUI bottomText;
 
         private ChestController chestController;
         private ChestSlot slot;
@@ -21,6 +29,10 @@ namespace ChestSystem.Chest
             this.slot = slot;
             chestRectTransform.anchoredPosition = slot.GetRectTransform().anchoredPosition;
         }
+        public void ChangeChestImage( )
+        {
+            chestImage.sprite = chestController.ChestModel.ChestClosedImage;
+        }
 
         private void Awake( )
         {
@@ -29,7 +41,7 @@ namespace ChestSystem.Chest
 
         private void Start( )
         {
-            chestImage.sprite = chestController.ChestModel.ChestClosedImage;
+            ChangeChestImage( );
         }
     }
 
