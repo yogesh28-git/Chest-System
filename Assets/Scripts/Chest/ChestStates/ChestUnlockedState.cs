@@ -24,13 +24,8 @@ namespace ChestSystem
             chestController.ChestView.TopText.text = "Unlocked";
             chestController.ChestView.BottomText.text = "OPEN";
             giftMessage.text = "Woooh!!!";
+            chestController.ChestView.ChestImage.sprite = chestController.ChestModel.ChestOpenImage;
 
-            giftMessage.gameObject.SetActive( true );
-            giftCoinText.gameObject.SetActive( true );
-            giftGemText.gameObject.SetActive( true );
-            SetGifts( );
-
-            UIService.OnChestPopUpClosed += this.OnStateDisable;
         }
         private void SetGifts( )
         {
@@ -44,18 +39,26 @@ namespace ChestSystem
 
             giftCoinText.text = "You got " + giftCoins.ToString( );
             giftGemText.text = "You got " + giftGems.ToString( );
+
+            PlayerService.Instance.IncrementCoins( giftCoins );
+            PlayerService.Instance.IncrementGems( giftGems );
         }
         public void ChestButtonAction( )
         {
+            UIService.OnChestPopUpClosed += DestroyChest;
+            giftMessage.gameObject.SetActive( true );
+            SetGifts( );
             UIService.Instance.EnableChestPopUp( );
+        }
+        private void DestroyChest( )
+        {
+            UIService.OnChestPopUpClosed -= DestroyChest;
+            OnStateDisable( );
+            chestController.ChestView.DestroyChest( );
         }
         public void OnStateDisable( )
         {
-            giftMessage.gameObject.SetActive( false );
-            giftCoinText.gameObject.SetActive( false );
-            giftGemText.gameObject.SetActive( false );
-
-            chestController.ChestView.DestroyChest( );
+            UIService.Instance.DisableChestPopUp();
         }
         public ChestState GetChestState( )
         {

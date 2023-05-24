@@ -15,6 +15,9 @@ namespace ChestSystem.Chest
         private ChestModel chestModel;
         private ChestView chestView;
 
+        private List<ChestController> chestControllerList = new List<ChestController>( );
+        public List<ChestController> ChestControllerList { get { return chestControllerList; } private set { } }
+
         public Transform ChestParentTransform { get { return chestParentTransform; } private set { } }
 
         private void Start( )
@@ -24,7 +27,7 @@ namespace ChestSystem.Chest
         public void CreateRandomChest( )
         {
             ChestSlot slot = SlotService.Instance.GetVacantSlot( );
-            if(slot == null ) 
+            if ( slot == null )
             {
                 UIService.Instance.EnableSlotsFullPopUp( );
                 return;
@@ -32,19 +35,35 @@ namespace ChestSystem.Chest
 
             int randomNumber = Random.Range( 1, 101 );
             ChestScriptableObject chestObject = null;
-
-            foreach (var i in chestList)
+            int totalProbability = 100;
+            foreach ( var i in chestList )
             {
-                if(randomNumber >= i.GetProbability( ) )
+                if ( randomNumber >= ( totalProbability - i.GetProbability( ) ) )
                 {
                     chestObject = i.GetChestObject( );
+                }
+                else
+                {
+                    totalProbability -= i.GetProbability( );
                 }
             }
 
             chestModel = new ChestModel( chestObject );
             ChestController = new ChestController( chestModel, chestPrefab );
             chestView = ChestController.ChestView;
-            chestView.SetSlot(slot);
+            ChestControllerList.Add( ChestController );
+            chestView.SetSlot( slot );
+        }
+        public bool IsAnyChestUnlocking( )
+        {
+            foreach ( var i in chestControllerList )
+            {
+                if ( i.ChestState == ChestState.UNLOCKING )
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }

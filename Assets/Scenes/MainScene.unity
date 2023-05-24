@@ -1532,6 +1532,7 @@ MonoBehaviour:
   closeChestPopUp: {fileID: 1277592068}
   unlockNowButton: {fileID: 232745137}
   unlockNowRectTransform: {fileID: 232745136}
+  unlockText: {fileID: 728804546}
   setTimerButton: {fileID: 1919314903}
   giftMessage: {fileID: 292254751}
   giftCoinText: {fileID: 1801822893}
