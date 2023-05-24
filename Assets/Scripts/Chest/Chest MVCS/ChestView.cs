@@ -33,6 +33,11 @@ namespace ChestSystem.Chest
         {
             chestImage.sprite = chestController.ChestModel.ChestClosedImage;
         }
+        public void DestroyChest( )
+        {
+            slot.SetIsEmpty( true );
+            Destroy( this.gameObject );
+        }
 
         private void Awake( )
         {
@@ -42,6 +47,8 @@ namespace ChestSystem.Chest
         private void Start( )
         {
             ChangeChestImage( );
+
+            chestButton.onClick.AddListener( chestController.ChestButtonAction );
         }
     }
 

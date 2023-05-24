@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using ChestSystem.Chest;
@@ -10,17 +11,32 @@ namespace ChestSystem
         public RectTransform UnlockNowRectTransform { get { return unlockNowRectTransform; } private set { } }
         public Button UnlockNowButton { get { return unlockNowButton; } private set { } }
         public Button SetTimerButton { get { return setTimerButton; } private set { } }
+        public TextMeshProUGUI GiftMessage { get { return giftMessage;} private set { } }
+        public TextMeshProUGUI GiftCoinText { get { return giftCoinText; } private set { } }
+        public TextMeshProUGUI GiftGemText { get { return giftGemText; } private set { } }
 
+        [Header( "Chest Related Buttons" )]
         [SerializeField] private Button createChestButton;
         [SerializeField] private GameObject rayCastBlocker;
         [SerializeField] private GameObject chestSlotsFullPopUp;
         [SerializeField] private Button closeChestSlotsFull;
+
+        [Header("Chest Pop Up")]
         [SerializeField] private GameObject chestPopUp;
         [SerializeField] private Button closeChestPopUp;
         [SerializeField] private Button unlockNowButton;
         [SerializeField] private RectTransform unlockNowRectTransform;
         [SerializeField] private Button setTimerButton;
-        [SerializeField] private TextMeshProUGUI giftText;
+        [SerializeField] private TextMeshProUGUI giftMessage;
+        [SerializeField] private TextMeshProUGUI giftCoinText;
+        [SerializeField] private TextMeshProUGUI giftGemText;
+
+        [Header( "Player Stats" )]
+        [SerializeField] private TextMeshProUGUI coins;
+        [SerializeField] private TextMeshProUGUI gems;
+
+
+        public static event Action OnChestPopUpClosed;
 
         private void Start( )
         {
@@ -32,6 +48,8 @@ namespace ChestSystem
             createChestButton.onClick.AddListener( ChestService.Instance.CreateRandomChest );
             closeChestSlotsFull.onClick.AddListener( DisableSlotsFullPopUp );
             closeChestPopUp.onClick.AddListener( DisableChestPopUp );
+
+            RefreshPlayerStats( );
         }
         public void EnableSlotsFullPopUp( )
         {
@@ -50,10 +68,17 @@ namespace ChestSystem
             chestPopUp.SetActive( true );
         }
 
-        private void DisableChestPopUp( )
+        public void DisableChestPopUp( )
         {
-            unlockNowButton.gameObject.SetActive( false );
-            setTimerButton.gameObject.SetActive( false );
+            rayCastBlocker.SetActive( false );
+            chestPopUp.SetActive( false );
+            OnChestPopUpClosed?.Invoke( );
+        }
+
+        public void RefreshPlayerStats( )
+        {
+            coins.text = PlayerService.Instance.GetCoinsInAccount( ).ToString( );
+            gems.text = PlayerService.Instance.GetGemsInAccount( ).ToString( );
         }
     }
 }

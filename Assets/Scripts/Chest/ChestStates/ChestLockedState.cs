@@ -39,10 +39,16 @@ namespace ChestSystem
         {
             unlockNowButton.gameObject.SetActive( false );
             setTimerButton.gameObject.SetActive( false );
+            UIService.Instance.DisableChestPopUp( );
         }
         public ChestState GetChestState( )
         {
             return ChestState.LOCKED;
+        }
+
+        public int GetRequiredGemsToUnlock( )
+        {
+            return Mathf.CeilToInt( unlockDurationMinutes*60 / chestController.TimeSecondsPerGem );
         }
     }
 }
