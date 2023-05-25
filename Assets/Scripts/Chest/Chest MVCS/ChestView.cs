@@ -37,6 +37,7 @@ namespace ChestSystem.Chest
         public void DestroyChest( )
         {
             slot.SetIsEmpty( true );
+            chestButton.onClick.RemoveAllListeners( );
             chestController.RemoveView( );
         }
 

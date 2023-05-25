@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace ChestSystem.Chest
 {
     public class ChestController
@@ -21,7 +19,7 @@ namespace ChestSystem.Chest
             chestUnlocking = new ChestUnlockingState( this );
             chestUnlocked = new ChestUnlockedState( this );
 
-            //hasn't been enabled yet.
+            //state hasn't been enabled yet.
             currentState = chestLocked;
         }
         public void SetModel( ChestModel chestModel)
