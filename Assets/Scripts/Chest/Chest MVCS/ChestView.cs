@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using System;
 using TMPro;
 
 namespace ChestSystem.Chest
@@ -11,6 +13,8 @@ namespace ChestSystem.Chest
         public TextMeshProUGUI BottomText { get { return bottomText; } private set { } }
         public Image ChestImage { get { return chestImage; } private set { } }
 
+        public int TimeRemainingSeconds { get; private set; }
+
         [SerializeField] private RectTransform chestRectTransform;
         [SerializeField] private Image chestImage;
         [SerializeField] private Button chestButton;
@@ -19,6 +23,7 @@ namespace ChestSystem.Chest
 
         private ChestController chestController;
         private ChestSlot slot;
+        private Coroutine countDown;
         public void SetController( ChestController controller )
         {
             this.chestController = controller;
@@ -41,9 +46,24 @@ namespace ChestSystem.Chest
             Destroy( this.gameObject );
         }
 
+        public IEnumerator CountDown()
+        {
+            while ( TimeRemainingSeconds >= 0 )
+            {
+                TimeSpan timeSpan = TimeSpan.FromSeconds( TimeRemainingSeconds );
+                string timeString = timeSpan.ToString( @"hh\:mm\:ss" );
+                BottomText.text = timeString;
+
+                TimeRemainingSeconds--;
+                yield return new WaitForSeconds( 1 );
+            }
+            chestController.UnlockNow( );
+        }
+
         private void Awake( )
         {
             transform.SetParent( ChestService.Instance.ChestParentTransform );
+            chestRectTransform.localScale = new Vector3( 1, 1, 1 );
         }
 
         private void Start( )
@@ -51,6 +71,8 @@ namespace ChestSystem.Chest
             ChangeChestImage( );
 
             chestButton.onClick.AddListener( chestController.ChestButtonAction );
+
+            TimeRemainingSeconds = chestController.ChestModel.UnlockDurationMinutes * 60;
         }
     }
 

@@ -4,7 +4,6 @@ namespace ChestSystem
     {
         LOCKED,
         UNLOCKING,
-        UNLOCKED,
-        OPEN
+        UNLOCKED
     }
 }

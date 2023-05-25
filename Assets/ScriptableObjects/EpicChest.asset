@@ -18,4 +18,4 @@ MonoBehaviour:
   coinsMax: 800
   gemsMin: 45
   gemsMax: 60
-  unlockDurationMinutes: 1
+  unlockDurationMinutes: 60

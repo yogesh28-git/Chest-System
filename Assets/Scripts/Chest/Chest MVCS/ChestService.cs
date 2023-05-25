@@ -41,6 +41,7 @@ namespace ChestSystem.Chest
                 if ( randomNumber >= ( totalProbability - i.GetProbability( ) ) )
                 {
                     chestObject = i.GetChestObject( );
+                    break;
                 }
                 else
                 {
