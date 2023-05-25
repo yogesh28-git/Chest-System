@@ -15,18 +15,32 @@ namespace ChestSystem.Chest
         public float TimeSecondsPerGem { get { return 600f; } private set { } } //10 minutes
         public ChestState ChestState { get { return currentState.GetChestState( ); } private set { } }
 
-        public ChestController( ChestModel chestModel, ChestView chestPrefab )
-        {
-            this.ChestModel = chestModel;
-            this.ChestView = GameObject.Instantiate<ChestView>( chestPrefab );
-
-            ChestModel.SetController( this );
-            ChestView.SetController( this );
-
+        public ChestController(  )
+        { 
             chestLocked = new ChestLockedState( this );
             chestUnlocking = new ChestUnlockingState( this );
             chestUnlocked = new ChestUnlockedState( this );
-            
+
+            //hasn't been enabled yet.
+            currentState = chestLocked;
+        }
+        public void SetModel( ChestModel chestModel)
+        {
+            this.ChestModel = chestModel;
+            ChestModel.SetController( this );
+        }
+        public void SetChestView( )
+        {
+            this.ChestView = ChestPoolService.Instance.GetFromPool(this);
+            SetInitialState( );
+        }
+        public void RemoveView( )
+        {
+            ChestPoolService.Instance.ReturnToPool( this.ChestView );
+            this.ChestView = null;
+        }
+        public void SetInitialState( )
+        {
             currentState = chestLocked;
             currentState.OnStateEnable( );
         }

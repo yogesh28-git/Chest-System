@@ -53,7 +53,7 @@ namespace ChestSystem
             giftMessage.gameObject.SetActive( false );
             UnlockButtonInitialPos = unlockNowRectTransform.anchoredPosition;
 
-            createChestButton.onClick.AddListener( ChestService.Instance.CreateRandomChest );
+            createChestButton.onClick.AddListener( ChestService.Instance.SpawnRandomChest);
             closeChestSlotsFull.onClick.AddListener( DisableSlotsFullPopUp );
             closeChestPopUp.onClick.AddListener( DisableChestPopUp );
 
