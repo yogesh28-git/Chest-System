@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using ChestSystem.Chest;
 
-namespace ChestSystem
+namespace ChestSystem.Chest
 {
     public class ChestLockedState : IChestState
     {

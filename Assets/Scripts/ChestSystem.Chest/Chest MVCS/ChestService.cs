@@ -6,41 +6,19 @@ namespace ChestSystem.Chest
 {
     public class ChestService : MonoSingletonGeneric<ChestService>
     {
-        //public ChestController ChestController { get; private set; }
-
         [SerializeField] private List<ChestRarity> chestList;
         
         [SerializeField] private Transform chestParentTransform;
 
         public Transform ChestParentTransform { get { return chestParentTransform; } private set { } }
 
-        private void Start( )
-        {
-            chestList.Sort( ( p1, p2 ) => p1.GetProbability( ).CompareTo( p2.GetProbability( ) ) );
-            CreateChestModels( );
-            CreateChestControllers( );
-        }
-        //Make one Chest Model for each scribtable Object.
-        private void CreateChestModels( )
-        {
-            foreach(var i in chestList )
-            {
-                ChestModel model = new ChestModel( i.GetChestObject() );
-                i.SetModel( model );
-            }
-        }
 
-        //Make one Chest Controller for each slot
-        private void CreateChestControllers( )
-        {
-            ChestScriptableObject chestObject = null;
-            int numberOfSlots = SlotService.Instance.GetNumberOfSlots( );
-            for (int i=0; i< numberOfSlots; i++ )
-            {
-                ChestController chestController = new ChestController();
-                SlotService.Instance.GetSlotAtPos( i ).SetController( chestController );
-            }
-        }
+        /*
+         * Select Model according to Probability.
+         * Select Controller according to slot available.
+         * Get View from object pool. 
+         * Assign View and Model to the Controller.
+         */
         public void SpawnRandomChest( )
         {
             ChestSlot slot = SlotService.Instance.GetVacantSlot( );
@@ -65,7 +43,7 @@ namespace ChestSystem.Chest
                     totalProbability -= i.GetProbability( );
                 }
             }
-            ChestController controller = slot.GetController();
+            ChestController controller = slot.GetController( );
             controller.SetModel( chestRarity.GetModel( ) );
             controller.SetChestView( );
             controller.ChestView.SetSlot( slot );
@@ -84,7 +62,45 @@ namespace ChestSystem.Chest
             return false;
         }
 
+        private void Start( )
+        {
+            chestList.Sort( ( p1, p2 ) => p1.GetProbability( ).CompareTo( p2.GetProbability( ) ) );
+            CreateChestModels( );
+            CreateChestControllers( );
+        }
+
+        /*
+         * Create a chest model for each type of chest (scriptable object). 
+         * No of models = No of types of chest
+         */
+        private void CreateChestModels( )
+        {
+            foreach(var i in chestList )
+            {
+                ChestModel model = new ChestModel( i.GetChestObject() );
+                i.SetModel( model );
+            }
+        }
+
+        /*
+         * Create a chest controller for each slot.
+         * No of controllers = No of slots
+         */
+        private void CreateChestControllers( )
+        {
+            ChestScriptableObject chestObject = null;
+            int numberOfSlots = SlotService.Instance.GetNumberOfSlots( );
+            for (int i=0; i< numberOfSlots; i++ )
+            {
+                ChestController chestController = new ChestController();
+                SlotService.Instance.GetSlotAtPos( i ).SetController( chestController );
+            }
+        }
+
+        
+
     }
+    
     [System.Serializable]
     public class ChestRarity
     {
@@ -92,6 +108,7 @@ namespace ChestSystem.Chest
         [SerializeField] private int probabilityPercentage;
 
         private ChestModel chestModel;
+
         public void SetModel(ChestModel model ) => chestModel = model;
         public ChestModel GetModel( ) => chestModel;
         public ChestScriptableObject GetChestObject( ) => chestObject;

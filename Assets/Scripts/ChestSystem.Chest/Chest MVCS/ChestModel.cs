@@ -4,8 +4,6 @@ namespace ChestSystem.Chest
 {
     public class ChestModel
     {
-        private ChestController chestController;
-
         public Sprite ChestClosedImage { get; private set; }
         public Sprite ChestOpenImage { get; private set; }
         public int CoinsMin { get; private set; } 
@@ -24,10 +22,6 @@ namespace ChestSystem.Chest
             this.GemsMax = chestObject.gemsMax;
 
             this.UnlockDurationMinutes = chestObject.unlockDurationMinutes;
-        }
-        public void SetController(ChestController controller )
-        {
-            this.chestController = controller;
         }
     }
 }

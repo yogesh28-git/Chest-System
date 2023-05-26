@@ -1,4 +1,4 @@
-namespace ChestSystem
+namespace ChestSystem.Chest
 {
     public interface IChestState
     {

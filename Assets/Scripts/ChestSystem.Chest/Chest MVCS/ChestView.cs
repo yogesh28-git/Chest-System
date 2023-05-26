@@ -1,7 +1,7 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System;
 using TMPro;
 
 namespace ChestSystem.Chest
@@ -12,7 +12,6 @@ namespace ChestSystem.Chest
         public TextMeshProUGUI TopText { get { return topText; } private set { } }
         public TextMeshProUGUI BottomText { get { return bottomText; } private set { } }
         public Image ChestImage { get { return chestImage; } private set { } }
-
         public int TimeRemainingSeconds { get; private set; }
 
         [SerializeField] private RectTransform chestRectTransform;

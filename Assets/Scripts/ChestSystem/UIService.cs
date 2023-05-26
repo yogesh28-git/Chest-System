@@ -43,39 +43,16 @@ namespace ChestSystem
 
         public static event Action OnChestPopUpClosed;
 
-        private void Start( )
+        public void RefreshPlayerStats( )
         {
-            rayCastBlocker.SetActive( false );
-            chestSlotsFullPopUp.SetActive( false );
-            chestPopUp.SetActive( false );
-            unlockNowButton.gameObject.SetActive( false );
-            setTimerButton.gameObject.SetActive( false );
-            giftMessage.gameObject.SetActive( false );
-            UnlockButtonInitialPos = unlockNowRectTransform.anchoredPosition;
-
-            createChestButton.onClick.AddListener( ChestService.Instance.SpawnRandomChest);
-            closeChestSlotsFull.onClick.AddListener( DisableSlotsFullPopUp );
-            closeChestPopUp.onClick.AddListener( DisableChestPopUp );
-
-            RefreshPlayerStats( );
+            coins.text = PlayerService.Instance.GetCoinsInAccount( ).ToString( );
+            gems.text = PlayerService.Instance.GetGemsInAccount( ).ToString( );
         }
-        public void EnableSlotsFullPopUp( )
-        {
-            rayCastBlocker.SetActive( true );
-            chestSlotsFullPopUp.SetActive( true );
-        }
-        private void DisableSlotsFullPopUp( )
-        {
-            rayCastBlocker.SetActive( false );
-            chestSlotsFullPopUp.SetActive( false );
-        }
-
         public void EnableChestPopUp( )
         {
             rayCastBlocker.SetActive( true );
             chestPopUp.SetActive( true );
         }
-
         public void DisableChestPopUp( )
         {
             rayCastBlocker.SetActive( false );
@@ -88,11 +65,31 @@ namespace ChestSystem
             unlockNowButton.onClick.RemoveAllListeners( );
             setTimerButton.onClick.RemoveAllListeners( );
         }
-
-        public void RefreshPlayerStats( )
+        public void EnableSlotsFullPopUp( )
         {
-            coins.text = PlayerService.Instance.GetCoinsInAccount( ).ToString( );
-            gems.text = PlayerService.Instance.GetGemsInAccount( ).ToString( );
+            rayCastBlocker.SetActive( true );
+            chestSlotsFullPopUp.SetActive( true );
+        }
+        private void DisableSlotsFullPopUp( )
+        {
+            rayCastBlocker.SetActive( false );
+            chestSlotsFullPopUp.SetActive( false );
+        }
+        private void Start( )
+        {
+            rayCastBlocker.SetActive( false );
+            chestSlotsFullPopUp.SetActive( false );
+            chestPopUp.SetActive( false );
+            unlockNowButton.gameObject.SetActive( false );
+            setTimerButton.gameObject.SetActive( false );
+            giftMessage.gameObject.SetActive( false );
+            UnlockButtonInitialPos = unlockNowRectTransform.anchoredPosition;
+
+            createChestButton.onClick.AddListener( ChestService.Instance.SpawnRandomChest );
+            closeChestSlotsFull.onClick.AddListener( DisableSlotsFullPopUp );
+            closeChestPopUp.onClick.AddListener( DisableChestPopUp );
+
+            RefreshPlayerStats( );
         }
     }
 }

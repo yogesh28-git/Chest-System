@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using ChestSystem.Chest;
 
-namespace ChestSystem
+namespace ChestSystem.Chest
 {
     public class ChestUnlockingState : IChestState
     {
@@ -32,6 +31,7 @@ namespace ChestSystem
         {
             //bring the Unlock button to centre of the popup
             unlockButtonRectTransform.anchoredPosition = centerOfChestPopUp;
+
             unlockNowButton.gameObject.SetActive( true );
             unlockText.text = "Unlock Now: " + GetRequiredGemsToUnlock( ).ToString( );
             unlockNowButton.onClick.AddListener( chestController.UnlockNow );

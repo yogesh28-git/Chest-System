@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
-using ChestSystem.Chest;
 
-namespace ChestSystem
+namespace ChestSystem.Chest
 {
     public class ChestUnlockedState : IChestState
     {
@@ -26,6 +25,26 @@ namespace ChestSystem
             chestController.ChestView.ChestImage.sprite = chestController.ChestModel.ChestOpenImage;
 
         }
+        public void ChestButtonAction( )
+        {
+            UIService.OnChestPopUpClosed += DestroyChest;
+            giftMessage.gameObject.SetActive( true );
+            SetGifts( );
+            UIService.Instance.EnableChestPopUp( );
+        }
+        public void OnStateDisable( )
+        {
+            UIService.Instance.DisableChestPopUp();
+        }
+        public ChestState GetChestState( )
+        {
+            return ChestState.UNLOCKED;
+        }
+        public int GetRequiredGemsToUnlock( )
+        {
+            return 0;
+        }
+
         private void SetGifts( )
         {
             int coinsMin = chestController.ChestModel.CoinsMin;
@@ -42,30 +61,11 @@ namespace ChestSystem
             PlayerService.Instance.IncrementCoins( giftCoins );
             PlayerService.Instance.IncrementGems( giftGems );
         }
-        public void ChestButtonAction( )
-        {
-            UIService.OnChestPopUpClosed += DestroyChest;
-            giftMessage.gameObject.SetActive( true );
-            SetGifts( );
-            UIService.Instance.EnableChestPopUp( );
-        }
         private void DestroyChest( )
         {
             UIService.OnChestPopUpClosed -= DestroyChest;
             OnStateDisable( );
             chestController.ChestView.DestroyChest( );
-        }
-        public void OnStateDisable( )
-        {
-            UIService.Instance.DisableChestPopUp();
-        }
-        public ChestState GetChestState( )
-        {
-            return ChestState.UNLOCKED;
-        }
-        public int GetRequiredGemsToUnlock( )
-        {
-            return 0;
         }
     }
 }

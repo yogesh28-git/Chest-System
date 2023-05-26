@@ -4,14 +4,13 @@ namespace ChestSystem.Chest
     {
         public ChestModel ChestModel { get; private set; }
         public ChestView ChestView { get; private set; }
+        public float TimeSecondsPerGem { get { return 600f; } private set { } } //10 minutes = 1 gem
+        public ChestState ChestState { get { return currentState.GetChestState( ); } private set { } }
 
         private IChestState currentState;
         private ChestLockedState chestLocked;
         private ChestUnlockingState chestUnlocking;
         private ChestUnlockedState chestUnlocked;
-
-        public float TimeSecondsPerGem { get { return 600f; } private set { } } //10 minutes
-        public ChestState ChestState { get { return currentState.GetChestState( ); } private set { } }
 
         public ChestController(  )
         { 
@@ -25,7 +24,6 @@ namespace ChestSystem.Chest
         public void SetModel( ChestModel chestModel)
         {
             this.ChestModel = chestModel;
-            ChestModel.SetController( this );
         }
         public void SetChestView( )
         {

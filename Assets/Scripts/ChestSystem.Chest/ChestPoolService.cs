@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using ChestSystem.Chest;
 
-namespace ChestSystem
+namespace ChestSystem.Chest
 {
     public class ChestPoolService: MonoSingletonGeneric<ChestPoolService>
     {
@@ -10,18 +9,6 @@ namespace ChestSystem
 
         private Queue<ChestView> objectPool = new Queue<ChestView>();
         private int numberOfSlots;
-
-
-        private void Start( )
-        {
-            numberOfSlots = SlotService.Instance.GetNumberOfSlots( );
-            for(int i=0; i<numberOfSlots; i++ )
-            {
-                ChestView newView = GameObject.Instantiate<ChestView>( chestPrefab );
-                objectPool.Enqueue(  newView );
-                newView.gameObject.SetActive( false );
-            }
-        }
 
         public ChestView GetFromPool( ChestController chestController)
         {
@@ -35,11 +22,30 @@ namespace ChestSystem
             }
             return item;
         }
-
         public void ReturnToPool( ChestView item )
         {
             objectPool.Enqueue( item );
             item.gameObject.SetActive( false );
+        }
+
+        private void Start( )
+        {
+            CreateChestViews( );
+        }
+
+        /*
+         * Create a chest Views for each slot.
+         * No of Views = No of slots
+         */
+        private void CreateChestViews( )
+        {
+            numberOfSlots = SlotService.Instance.GetNumberOfSlots( );
+            for ( int i = 0; i < numberOfSlots; i++ )
+            {
+                ChestView newView = GameObject.Instantiate<ChestView>( chestPrefab );
+                objectPool.Enqueue( newView );
+                newView.gameObject.SetActive( false );
+            }
         }
     }
 }
